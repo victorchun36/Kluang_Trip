@@ -1,0 +1,822 @@
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>居銮二日一夜</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF6EE;
+    --paper-deep:#F2ECDC;
+    --rust:#C1502E;
+    --rust-deep:#9C3D22;
+    --pine:#1F4D3D;
+    --pine-deep:#143930;
+    --brass:#E8B23D;
+    --ink:#2B2620;
+    --ink-soft:#5B5247;
+    --line:rgba(43,38,32,0.16);
+  }
+ 
+  *{margin:0;padding:0;box-sizing:border-box;}
+ 
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Noto Serif SC','Inter',serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+ 
+  .grain{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:0.05;
+    z-index:999;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+ 
+  .eng{
+    font-family:'Inter',sans-serif;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+  }
+ 
+  /* ===== HERO / TICKET ===== */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:8vh 6vw 6vh;
+    position:relative;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(193,80,46,0.07), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(31,77,61,0.08), transparent 45%),
+      var(--paper);
+  }
+ 
+  .hero-label{
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-bottom:28px;
+    opacity:0;
+    animation:fadeUp 0.8s ease forwards 0.2s;
+  }
+ 
+  .ticket{
+    width:100%;
+    max-width:380px;
+    background:var(--paper);
+    border:1.5px solid var(--ink);
+    position:relative;
+    padding:0;
+    opacity:0;
+    transform:translateY(24px);
+    animation:fadeUp 0.9s cubic-bezier(.16,1,.3,1) forwards 0.45s;
+    box-shadow:6px 6px 0 rgba(43,38,32,0.1);
+  }
+ 
+  .ticket::before, .ticket::after{
+    content:'';
+    position:absolute;
+    width:22px;
+    height:22px;
+    background:var(--paper);
+    border-radius:50%;
+    border:1.5px solid var(--ink);
+    top:50%;
+    transform:translateY(-50%);
+  }
+  .ticket::before{ left:-12px; }
+  .ticket::after{ right:-12px; }
+ 
+  .ticket-top{
+    padding:22px 26px 18px;
+    border-bottom:1.5px dashed var(--ink);
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+  }
+ 
+  .ticket-route{
+    font-size:11px;
+    color:var(--rust-deep);
+    margin-bottom:6px;
+  }
+ 
+  .ticket-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:30px;
+    line-height:1.1;
+    color:var(--ink);
+  }
+ 
+  .ticket-title em{
+    font-style:italic;
+    font-weight:500;
+    color:var(--rust);
+  }
+ 
+  .ticket-no{
+    text-align:right;
+    font-size:10px;
+    color:var(--ink-soft);
+    line-height:1.6;
+  }
+ 
+  .ticket-no b{
+    display:block;
+    font-size:13px;
+    color:var(--ink);
+    font-weight:600;
+  }
+ 
+  .ticket-body{
+    padding:20px 26px 24px;
+  }
+ 
+  .ticket-row{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:16px;
+  }
+ 
+  .ticket-field{
+    flex:1;
+  }
+ 
+  .ticket-field-label{
+    font-size:10px;
+    color:var(--ink-soft);
+    margin-bottom:4px;
+  }
+ 
+  .ticket-field-value{
+    font-family:'Fraunces', serif;
+    font-size:18px;
+    font-weight:500;
+    color:var(--ink);
+  }
+ 
+  .ticket-divider{
+    height:1px;
+    background:var(--line);
+    margin:16px 0;
+  }
+ 
+  .ticket-stops{
+    font-size:11px;
+    color:var(--ink-soft);
+    line-height:1.9;
+  }
+ 
+  .ticket-stops b{ color:var(--pine-deep); font-weight:600; }
+ 
+  .ticket-bottom{
+    padding:14px 26px;
+    background:var(--pine);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+ 
+  .ticket-bottom span{
+    font-size:10px;
+    color:rgba(250,246,238,0.75);
+  }
+ 
+  .ticket-stamp{
+    font-size:11px;
+    color:var(--brass);
+    font-weight:600;
+    border:1px solid var(--brass);
+    padding:3px 10px;
+    border-radius:2px;
+    transform:rotate(-4deg);
+  }
+ 
+  .scroll-hint{
+    margin-top:40px;
+    font-size:11px;
+    color:var(--ink-soft);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    opacity:0;
+    animation:fadeUp 0.8s ease forwards 1s;
+  }
+ 
+  .scroll-hint .arrow{
+    width:1px;
+    height:28px;
+    background:var(--ink-soft);
+    position:relative;
+    overflow:hidden;
+  }
+  .scroll-hint .arrow::after{
+    content:'';
+    position:absolute;
+    top:-100%;
+    left:0;
+    width:100%;
+    height:100%;
+    background:var(--rust);
+    animation:drip 1.8s ease-in-out infinite;
+  }
+ 
+  @keyframes drip{
+    0%{ top:-100%; }
+    60%{ top:100%; }
+    100%{ top:100%; }
+  }
+ 
+  @keyframes fadeUp{
+    to{ opacity:1; transform:translateY(0); }
+  }
+ 
+  /* ===== DAY SECTION HEADER ===== */
+  .day-header{
+    padding:14vh 8vw 6vh;
+    text-align:center;
+    position:relative;
+  }
+ 
+  .day-header::before{
+    content:'';
+    position:absolute;
+    top:0; left:50%;
+    transform:translateX(-50%);
+    width:1px;
+    height:8vh;
+    background:var(--line);
+  }
+ 
+  .day-tag{
+    font-size:12px;
+    color:var(--rust-deep);
+    margin-bottom:14px;
+  }
+ 
+  .day-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:42px;
+    line-height:1.15;
+    margin-bottom:14px;
+  }
+ 
+  .day-sub{
+    font-size:14px;
+    color:var(--ink-soft);
+    max-width:280px;
+    margin:0 auto;
+    line-height:1.8;
+  }
+ 
+  /* ===== STOP CARD ===== */
+  .stop{
+    padding:0 7vw;
+    margin-bottom:14vh;
+    opacity:0;
+    transform:translateY(32px);
+    transition:opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);
+  }
+  .stop.visible{ opacity:1; transform:translateY(0); }
+ 
+  .stop-time{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  }
+ 
+  .stop-time .dot{
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--rust);
+    flex-shrink:0;
+  }
+ 
+  .stop-time span{
+    font-size:11px;
+    color:var(--ink-soft);
+  }
+ 
+  .stop-card{
+    background:var(--paper);
+    border:1px solid var(--ink);
+    position:relative;
+    padding:30px 26px 26px;
+  }
+ 
+  .stop-corner{
+    position:absolute;
+    top:8px; right:8px;
+    font-size:9px;
+    color:var(--ink-soft);
+    opacity:0.6;
+  }
+ 
+  .stop-eyebrow{
+    font-size:11px;
+    color:var(--pine-deep);
+    margin-bottom:10px;
+  }
+ 
+  .stop-name{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:25px;
+    line-height:1.25;
+    margin-bottom:12px;
+    color:var(--ink);
+  }
+ 
+  .stop-desc{
+    font-size:14px;
+    line-height:1.85;
+    color:var(--ink-soft);
+    margin-bottom:16px;
+  }
+ 
+  .stop-tip{
+    border-top:1px dashed var(--line);
+    padding-top:14px;
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+  }
+ 
+  .stop-tip .mark{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:14px;
+    color:var(--rust);
+    flex-shrink:0;
+  }
+ 
+  .stop-tip p{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    line-height:1.7;
+  }
+ 
+  .stop-tip p b{ color:var(--ink); font-weight:600; }
+ 
+  /* connecting thread */
+  .thread{
+    width:1px;
+    height:8vh;
+    background:repeating-linear-gradient(to bottom, var(--line) 0, var(--line) 4px, transparent 4px, transparent 9px);
+    margin:0 auto;
+  }
+ 
+  /* ===== REST / HOTEL BLOCK ===== */
+  .rest-block{
+    margin:0 7vw 14vh;
+    background:var(--pine);
+    border-radius:2px;
+    padding:34px 26px;
+    position:relative;
+    opacity:0;
+    transform:translateY(32px);
+    transition:opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);
+  }
+  .rest-block.visible{ opacity:1; transform:translateY(0); }
+ 
+  .rest-eyebrow{
+    font-size:11px;
+    color:var(--brass);
+    margin-bottom:10px;
+  }
+ 
+  .rest-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:23px;
+    color:var(--paper);
+    margin-bottom:10px;
+  }
+ 
+  .rest-desc{
+    font-size:13.5px;
+    color:rgba(250,246,238,0.78);
+    line-height:1.8;
+  }
+ 
+  .rest-desc b{ color:var(--brass); font-weight:600; }
+ 
+  /* ===== SOUVENIR STRIP ===== */
+  .souvenir-wrap{
+    padding:0 7vw;
+    margin-bottom:14vh;
+    opacity:0;
+    transform:translateY(32px);
+    transition:opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);
+  }
+  .souvenir-wrap.visible{ opacity:1; transform:translateY(0); }
+ 
+  .souvenir-label{
+    font-size:11px;
+    color:var(--rust-deep);
+    margin-bottom:14px;
+    text-align:center;
+  }
+ 
+  .souvenir-grid{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+ 
+  .souvenir-card{
+    border:1px solid var(--ink);
+    background:var(--brass);
+    background:linear-gradient(135deg, #F4D89A, var(--brass));
+    padding:18px 20px;
+    position:relative;
+  }
+ 
+  .souvenir-card::after{
+    content:'伴手礼';
+    position:absolute;
+    top:10px; right:14px;
+    font-size:9px;
+    color:rgba(43,38,32,0.45);
+  }
+ 
+  .souvenir-name{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:19px;
+    color:var(--ink);
+    margin-bottom:6px;
+  }
+ 
+  .souvenir-desc{
+    font-size:12.5px;
+    color:var(--ink);
+    opacity:0.75;
+    line-height:1.6;
+  }
+ 
+  /* ===== CLOSING ===== */
+  .closing{
+    min-height:90vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:8vh 8vw;
+    position:relative;
+    background:var(--ink);
+  }
+ 
+  .closing-mark{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:15px;
+    color:var(--brass);
+    margin-bottom:24px;
+    opacity:0;
+    transform:translateY(20px);
+    transition:opacity 0.8s ease, transform 0.8s ease;
+  }
+  .closing-mark.visible{ opacity:1; transform:translateY(0); }
+ 
+  .closing-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:36px;
+    line-height:1.3;
+    color:var(--paper);
+    margin-bottom:20px;
+    opacity:0;
+    transform:translateY(20px);
+    transition:opacity 0.8s ease 0.1s, transform 0.8s ease 0.1s;
+  }
+  .closing-title.visible{ opacity:1; transform:translateY(0); }
+ 
+  .closing-sub{
+    font-size:13.5px;
+    color:rgba(250,246,238,0.6);
+    max-width:280px;
+    line-height:1.9;
+    opacity:0;
+    transform:translateY(20px);
+    transition:opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+  }
+  .closing-sub.visible{ opacity:1; transform:translateY(0); }
+ 
+  .closing-line{
+    width:40px;
+    height:1px;
+    background:var(--brass);
+    margin:28px 0;
+    opacity:0;
+    transition:opacity 0.8s ease 0.3s;
+  }
+  .closing-line.visible{ opacity:1; }
+ 
+  @media (min-width:640px){
+    .ticket{ max-width:440px; }
+    .day-title{ font-size:52px; }
+    .souvenir-grid{ flex-direction:row; }
+  }
+</style>
+</head>
+<body>
+ 
+<div class="grain"></div>
+ 
+<!-- HERO TICKET -->
+<section class="hero">
+  <div class="hero-label eng">A weekend, mapped just for you</div>
+ 
+  <div class="ticket">
+    <div class="ticket-top">
+      <div>
+        <div class="ticket-route eng">Boarding pass · 二日一夜</div>
+        <div class="ticket-title">开往<br><em>居銮</em>的两天</div>
+      </div>
+      <div class="ticket-no">
+        NO.<b>KL-2602</b>
+        <div style="margin-top:8px;">CLASS<br><b>朋友限定</b></div>
+      </div>
+    </div>
+    <div class="ticket-body">
+      <div class="ticket-row">
+        <div class="ticket-field">
+          <div class="ticket-field-label eng">Day 1 · Sat</div>
+          <div class="ticket-field-value">午后抵达</div>
+        </div>
+        <div class="ticket-field" style="text-align:right;">
+          <div class="ticket-field-label eng">Day 2 · Sun</div>
+          <div class="ticket-field-value">傍晚返程</div>
+        </div>
+      </div>
+      <div class="ticket-divider"></div>
+      <div class="ticket-stops">
+        途经 <b>果汁与午餐</b> · <b>山间咖啡馆</b> · <b>老火车站</b> · <b>咖啡厂</b> · <b>百年饼香</b> · <b>壁画巷</b> · <b>煎蕊收尾</b>
+      </div>
+    </div>
+    <div class="ticket-bottom">
+      <span class="eng">Issued with care</span>
+      <span class="ticket-stamp">VALID</span>
+    </div>
+  </div>
+ 
+  <div class="scroll-hint">
+    <span class="eng">Scroll to begin</span>
+    <div class="arrow"></div>
+  </div>
+</section>
+ 
+<!-- DAY 1 HEADER -->
+<header class="day-header">
+  <div class="day-tag eng">Day 01 · Saturday</div>
+  <h1 class="day-title">先吃饱<br>再上山</h1>
+  <p class="day-sub">从一杯果汁开始，慢慢走进居銮的节奏</p>
+</header>
+ 
+<div class="thread"></div>
+ 
+<!-- STOP: 果汁+午餐 -->
+<div class="stop">
+  <div class="stop-time">
+    <div class="dot"></div>
+    <span class="eng">12:00 — Arrival</span>
+  </div>
+  <div class="stop-card">
+    <span class="stop-corner eng">01</span>
+    <div class="stop-eyebrow eng">First stop</div>
+    <h2 class="stop-name">果汁 &amp; 午餐</h2>
+    <p class="stop-desc">落地居銮的第一餐，不赶不急。先垫垫肚子，喝点清爽的，让接下来两天有个轻松的开场。</p>
+    <div class="stop-tip">
+      <span class="mark">*</span>
+      <p><b>节奏提示</b>　这顿不用太丰盛，留点胃口给晚餐。</p>
+    </div>
+  </div>
+</div>
+ 
+<div class="thread"></div>
+ 
+<!-- STOP: checkin -->
+<div class="stop">
+  <div class="stop-time">
+    <div class="dot"></div>
+    <span class="eng">15:00 — Check-in</span>
+  </div>
+  <div class="stop-card">
+    <span class="stop-corner eng">02</span>
+    <div class="stop-eyebrow eng">Settle in</div>
+    <h2 class="stop-name">Parkland Hotel</h2>
+    <p class="stop-desc">放下行李，冲个凉，躺一下。两天一夜最珍贵的就是这种不用赶路的空白时间。</p>
+    <div class="stop-tip">
+      <span class="mark">*</span>
+      <p><b>休息</b>　这里不安排活动，纯粹留白，喘口气再出发。</p>
+    </div>
+  </div>
+</div>
+ 
+<div class="thread"></div>
+ 
+<!-- STOP: 逛山 -->
+<div class="stop">
+  <div class="stop-time">
+    <div class="dot"></div>
+    <span class="eng">16:30 — Hillside</span>
+  </div>
+  <div class="stop-card">
+    <span class="stop-corner eng">03</span>
+    <div class="stop-eyebrow eng">Up the hill</div>
+    <h2 class="stop-name">Talula Hill 一带</h2>
+    <p class="stop-desc">休息够了，往甘巴隆山方向走走。Talula Hill、Monkey Cafe、Lumii Cafe 都在这一带，山间的咖啡馆，傍晚的风正好。</p>
+    <div class="stop-tip">
+      <span class="mark">*</span>
+      <p><b>慢慢逛</b>　三间各有风格，挑顺路或顺眼的坐下来就好，不必每间都进。</p>
+    </div>
+  </div>
+</div>
+ 
+<div class="thread"></div>
+ 
+<!-- STOP: 晚餐 -->
+<div class="stop">
+  <div class="stop-time">
+    <div class="dot"></div>
+    <span class="eng">19:30 — Dinner</span>
+  </div>
+  <div class="stop-card">
+    <span class="stop-corner eng">04</span>
+    <div class="stop-eyebrow eng">End of day one</div>
+    <h2 class="stop-name">晚餐，收个尾</h2>
+    <p class="stop-desc">第一天就这样过去。找个顺路的地方吃饭，聊聊今天逛了什么，明天还有更多。</p>
+  </div>
+</div>
+ 
+<!-- DAY 2 HEADER -->
+<header class="day-header">
+  <div class="day-tag eng">Day 02 · Sunday</div>
+  <h1 class="day-title">老城区<br>走一圈</h1>
+  <p class="day-sub">咖啡香、饼香、壁画、煎蕊，最后再上路</p>
+</header>
+ 
+<div class="thread"></div>
+ 
+<!-- STOP: 火车站咖啡 -->
+<div class="stop">
+  <div class="stop-time">
+    <div class="dot"></div>
+    <span class="eng">08:30 — Breakfast</span>
+  </div>
+  <div class="stop-card">
+    <span class="stop-corner eng">05</span>
+    <div class="stop-eyebrow eng">Heritage breakfast</div>
+    <h2 class="stop-name">火车站咖啡</h2>
+    <p class="stop-desc">居銮火车站里那间老咖啡店，1938年的味道。在月台边喝一杯传统白咖啡，听火车经过，是居銮最对的开场方式。</p>
+    <div class="stop-tip">
+      <span class="mark">*</span>
+      <p><b>人多</b>　周末早上常排队，建议早点到。</p>
+    </div>
+  </div>
+</div>
+ 
+<div class="thread"></div>
+ 
+<!-- STOP: 咖啡厂 -->
+<div class="stop">
+  <div class="stop-time">
+    <div class="dot"></div>
+    <span class="eng">10:00 — Factory visit</span>
+  </div>
+  <div class="stop-card">
+    <span class="stop-corner eng">06</span>
+    <div class="stop-eyebrow eng">Where the coffee is born</div>
+    <h2 class="stop-name">电视牌咖啡厂</h2>
+    <p class="stop-desc">看一看咖啡豆怎么炒、怎么磨、怎么包装。现场还能试喝白咖啡配苏打饼，逛完顺手带几包回去，居銮味道带得走。</p>
+    <div class="stop-tip">
+      <span class="mark">*</span>
+      <p><b>带手信</b>　这里买咖啡比外面划算，行李箱留点空间。</p>
+    </div>
+  </div>
+</div>
+ 
+<div class="thread"></div>
+ 
+<!-- SOUVENIR STRIP -->
+<div class="souvenir-wrap">
+  <div class="souvenir-label eng">11:00 — Souvenir run</div>
+  <div class="souvenir-grid">
+    <div class="souvenir-card">
+      <div class="souvenir-name">东豆沙饼</div>
+      <div class="souvenir-desc">现烤现卖，外皮酥香，红豆馅扎实不甜腻。排队是常态，值得等。</div>
+    </div>
+    <div class="souvenir-card">
+      <div class="souvenir-name">游港上发海月饼</div>
+      <div class="souvenir-desc">上海月饼的做法，外皮像曲奇，咸甜口味都有，买来当手信很合适。</div>
+    </div>
+  </div>
+</div>
+ 
+<div class="thread"></div>
+ 
+<!-- STOP: 午餐 -->
+<div class="stop">
+  <div class="stop-time">
+    <div class="dot"></div>
+    <span class="eng">12:30 — Lunch</span>
+  </div>
+  <div class="stop-card">
+    <span class="stop-corner eng">07</span>
+    <div class="stop-eyebrow eng">Midday pause</div>
+    <h2 class="stop-name">午餐时间</h2>
+    <p class="stop-desc">上午逛得差不多了，找个地方坐下吃饭，配着刚买的手信聊聊天，下午还有最后一段路。</p>
+  </div>
+</div>
+ 
+<div class="thread"></div>
+ 
+<!-- STOP: 壁画街 -->
+<div class="stop">
+  <div class="stop-time">
+    <div class="dot"></div>
+    <span class="eng">14:00 — Mural alley</span>
+  </div>
+  <div class="stop-card">
+    <span class="stop-corner eng">08</span>
+    <div class="stop-eyebrow eng">Color in the alley</div>
+    <h2 class="stop-name">壁画街</h2>
+    <p class="stop-desc">一整条巷子的墙都被画满了，居銮的旧街景在墙上重新活了一次。慢慢走，随手就能拍出好照片。</p>
+    <div class="stop-tip">
+      <span class="mark">*</span>
+      <p><b>拍照</b>　白天光线最好，墙面颜色会更跳。</p>
+    </div>
+  </div>
+</div>
+ 
+<div class="thread"></div>
+ 
+<!-- STOP: 煎蕊 -->
+<div class="stop">
+  <div class="stop-time">
+    <div class="dot"></div>
+    <span class="eng">15:30 — Last bite</span>
+  </div>
+  <div class="stop-card">
+    <span class="stop-corner eng">09</span>
+    <div class="stop-eyebrow eng">Final stop</div>
+    <h2 class="stop-name">Daddy Cendol</h2>
+    <p class="stop-desc">行程最后一口甜点。绵密的刨冰、浓郁的椰浆、不死甜的椰糖，给这趟旅程一个清爽的收尾。</p>
+    <div class="stop-tip">
+      <span class="mark">*</span>
+      <p><b>就在壁画街附近</b>　吃完正好接着往回程路上走。</p>
+    </div>
+  </div>
+</div>
+ 
+<!-- CLOSING -->
+<section class="closing" id="closing">
+  <div class="closing-mark" id="c1">完</div>
+  <h2 class="closing-title" id="c2">傍晚，<br>启程回家</h2>
+  <p class="closing-sub" id="c3">两天不长，但希望每一站，<br>都是我想和你分享的居銮。</p>
+  <div class="closing-line" id="c4"></div>
+</section>
+ 
+<script>
+  const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -40px 0px' };
+ 
+  const stopObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+ 
+  document.querySelectorAll('.stop, .rest-block, .souvenir-wrap').forEach(el => {
+    stopObserver.observe(el);
+  });
+ 
+  const closingObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        ['c1','c2','c3','c4'].forEach(id => document.getElementById(id).classList.add('visible'));
+      }
+    });
+  }, { threshold: 0.4 });
+ 
+  closingObserver.observe(document.getElementById('closing'));
+</script>
+ 
+</body>
+</html>
